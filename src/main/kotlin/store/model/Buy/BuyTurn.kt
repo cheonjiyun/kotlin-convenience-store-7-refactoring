@@ -1,18 +1,22 @@
-package store.Buy
+package store.model.Buy
 
 import store.Enum.Error
-import store.Product.BuyProduct
-import store.Product.Product
-import store.Promotion.Promotion
+import store.model.Product.BuyProduct
+import store.model.Product.Product
+import store.model.Promotion.Promotion
 import store.View.InputView
 import store.View.OutputView
+import store.model.Membership.MemberShip
 
 
 val MEMBERSHIP_DISCOUNT_RATE = 0.3
 
-class BuyController(private val promotions: List<Promotion>, private var products: List<Product>) {
-    private val inputView = InputView()
-    private val outputView = OutputView()
+class BuyController(
+    private val inputView: InputView,
+    private val outputView: OutputView,
+    private val promotions: List<Promotion>,
+    private var products: List<Product>
+) {
 
     private lateinit var buyList: List<BuyProduct>
     private var promotionList = mutableListOf<BuyProduct>()
@@ -42,7 +46,7 @@ class BuyController(private val promotions: List<Promotion>, private var product
 
     private fun checkRemoveNoPromotion(buyProduct: BuyProduct, storeProduct: Product) {
         if (!inputView.isBuyNotPromotion(buyProduct.name, buyProduct.quantity - storeProduct.getQuantity())) {
-//            removeNoPromotion(buyProduct)
+            removeNoPromotion(buyProduct)
         }
     }
 
@@ -86,9 +90,9 @@ class BuyController(private val promotions: List<Promotion>, private var product
         if (promotion?.canApplyPromotion() == true) {
             try {
                 // 프로모션 재고는 있는데, 증정수량+구매수량 만큼은 없음
-//                if (promotion.howGetQuantity(canPromotionQuantity) + buyProduct.quantity > product.getQuantity()) throw IllegalStateException(
-//                    Error.EXCEED_QUANTITY.errorMessage
-//                )
+                if (promotion.howGetQuantity(canPromotionQuantity) + buyProduct.quantity > product.getQuantity()) throw IllegalStateException(
+                    Error.EXCEED_QUANTITY.errorMessage
+                )
                 // 증정 적용
                 promotionList.addLast(
                     BuyProduct(
@@ -135,16 +139,6 @@ class BuyController(private val promotions: List<Promotion>, private var product
         }.reduce { acc, it -> acc + it }
     }
 
-    private fun checkMemberShip() {
-        val notPromotionPrice =
-            buyList.filter { it.promotion == null }.map { it.quantity * it.price }.reduceOrNull { acc, it -> acc + it }
-
-        if (notPromotionPrice == null) return
-
-
-        val discountPrice = (notPromotionPrice * MEMBERSHIP_DISCOUNT_RATE).toInt()
-        membershipDiscount = if(discountPrice > 8000) 8000 else discountPrice
-    }
 
     private fun buyProduct(buyProduct: BuyProduct) {
         val product = findProduct(buyProduct.name)
@@ -184,7 +178,8 @@ class BuyController(private val promotions: List<Promotion>, private var product
         calculatePromotion()
 
         if (inputView.isMembership()) {
-            checkMemberShip()
+            val memberShip = MemberShip(buyList)
+            membershipDiscount = memberShip.getMemberShipDisCount()
         }
 
         buyProducts()

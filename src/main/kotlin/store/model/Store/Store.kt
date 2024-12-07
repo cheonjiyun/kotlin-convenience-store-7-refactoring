@@ -1,13 +1,15 @@
-package store
+package store.model.Store
 
-import store.Buy.BuyController
-import store.Product.Product
-import store.Promotion.Promotion
+import store.model.Buy.BuyController
+import store.model.Product.Product
 import store.Util.readFile
 import store.View.InputView
+import store.View.OutputView
+import store.model.Promotion.Promotion
 
 class Store {
     private val inputView = InputView()
+    private val outputView = OutputView()
     private lateinit var products: List<Product>
     private lateinit var promotions: List<Promotion>
 
@@ -48,7 +50,7 @@ class Store {
         saveStock()
 
         while (true) {
-            val buyController = BuyController(promotions, products)
+            val buyController = BuyController(inputView, outputView, promotions, products)
             buyController.buyStart()
             if (!inputView.isReBuy()) break
         }

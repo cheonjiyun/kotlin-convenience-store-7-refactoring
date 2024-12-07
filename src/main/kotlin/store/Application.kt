@@ -1,6 +1,6 @@
 package store
 
-import store.View.InputView
+import store.model.Store.Store
 
 fun main() {
     val store = Store()

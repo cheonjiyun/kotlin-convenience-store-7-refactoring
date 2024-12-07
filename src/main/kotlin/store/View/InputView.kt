@@ -2,7 +2,7 @@ package store.View
 
 import camp.nextstep.edu.missionutils.Console
 import store.Enum.Error
-import store.Product.BuyInputProduct
+import store.model.Product.BuyInputProduct
 import java.util.*
 
 class InputView {

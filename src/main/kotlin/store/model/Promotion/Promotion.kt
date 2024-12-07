@@ -1,4 +1,4 @@
-package store.Promotion
+package store.model.Promotion
 
 import java.text.SimpleDateFormat
 import java.util.Date

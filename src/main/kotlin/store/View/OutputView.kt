@@ -1,7 +1,7 @@
 package store.View
 
-import store.Product.BuyProduct
-import store.Product.Product
+import store.model.Product.BuyProduct
+import store.model.Product.Product
 import java.text.DecimalFormat
 
 class OutputView {
