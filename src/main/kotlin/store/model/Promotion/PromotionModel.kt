@@ -7,7 +7,13 @@ import store.View.InputView
 import store.model.Product.BuyProduct
 import store.model.Product.Product
 
-class PromotionModel (private val buyList: List<BuyProduct>, private val promotionList: MutableList<BuyProduct>,private val products : List<Product>, private val promotions : List<Promotion>, private val inputView: InputView){
+class PromotionModel(
+    private val buyList: List<BuyProduct>,
+    private val promotionList: MutableList<BuyProduct>,
+    private val products: List<Product>,
+    private val promotions: List<Promotion>,
+    private val inputView: InputView
+) {
     private fun isCanAddPromotion(buyProduct: BuyProduct): Boolean {
         val promotion = findPromotion(promotions, buyProduct.promotion!!.getName())
         val product = findProduct(products, buyProduct.name)
@@ -88,7 +94,12 @@ class PromotionModel (private val buyList: List<BuyProduct>, private val promoti
         }
 
         applyPromotion(buyProduct)
+    }
 
+    fun calculatePromotion(): Int {
+        val discountPrice = promotionList.map { it.quantity * it.price }.reduceOrNull { acc, it -> acc + it }
+        if (discountPrice != null) return discountPrice
+        else return 0
     }
 
 

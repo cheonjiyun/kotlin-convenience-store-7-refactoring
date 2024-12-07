@@ -4,6 +4,7 @@ import store.Enum.Error
 import store.Util.findGeneralProduct
 import store.Util.findProduct
 import store.Util.findPromotion
+import store.Util.printError
 import store.model.Product.BuyProduct
 import store.model.Product.Product
 import store.model.Promotion.Promotion
@@ -28,19 +29,11 @@ class BuyController(
     private var promotionDiscount = 0
     private var membershipDiscount = 0
 
-
-    private fun calculatePromotion() {
-        val discountPrice = promotionList.map { it.quantity * it.price }.reduceOrNull { acc, it -> acc + it }
-        if (discountPrice != null) promotionDiscount = discountPrice
-    }
-
-
-    private fun calculateTotalPrice() {
-        totalPrice = buyList.map { buyProduct ->
+    private fun calculateTotalPrice(): Int {
+        return buyList.map { buyProduct ->
             buyProduct.price * buyProduct.quantity
         }.reduce { acc, it -> acc + it }
     }
-
 
     private fun buyProduct(buyProduct: BuyProduct) {
         val product = findProduct(products, buyProduct.name)
@@ -55,12 +48,10 @@ class BuyController(
     }
 
     private fun buyProducts() {
-        try {
+        printError {
             buyList.forEach { buyProduct ->
                 buyProduct(buyProduct)
             }
-        } catch (e: IllegalArgumentException) {
-            println(e.message)
         }
     }
 
@@ -78,8 +69,7 @@ class BuyController(
 
         val promotionModel = PromotionModel(buyList, promotionList, products, promotions, inputView)
         promotionModel.checkPromotions()
-
-        calculatePromotion()
+        promotionDiscount = promotionModel.calculatePromotion()
 
         if (inputView.isMembership()) {
             val memberShip = MemberShip(buyList)
@@ -88,7 +78,7 @@ class BuyController(
 
         buyProducts()
 
-        calculateTotalPrice()
+        totalPrice = calculateTotalPrice()
         outputView.printReceipt(buyList, promotionList, totalPrice, promotionDiscount, membershipDiscount)
     }
 }
