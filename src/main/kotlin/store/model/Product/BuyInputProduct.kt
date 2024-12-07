@@ -1,4 +1,4 @@
-package store.Product
+package store.model.Product
 
 data class BuyInputProduct(
     val name: String,

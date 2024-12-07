@@ -1,4 +1,4 @@
-package store.Promotion
+package store.model.Promotion
 
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -21,14 +21,6 @@ class Promotion(
 
     fun getGet(): Int {
         return get
-    }
-
-    fun getStartDate(): String {
-        return start_date
-    }
-
-    fun getEndDate(): String {
-        return end_date
     }
 
     fun canApplyPromotion(): Boolean {

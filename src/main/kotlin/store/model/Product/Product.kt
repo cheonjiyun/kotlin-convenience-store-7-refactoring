@@ -1,10 +1,15 @@
-package store.Product
+package store.model.Product
 
 import store.Enum.Error
-import store.Promotion.Promotion
+import store.model.Promotion.Promotion
 
 // 상품
-class Product(private var name: String, private val price: Int, private var quantity: Int, private var promotion: Promotion?) {
+class Product(
+    private var name: String,
+    private val price: Int,
+    private var quantity: Int,
+    private var promotion: Promotion?
+) {
 
     fun getName(): String {
         return name
@@ -14,7 +19,7 @@ class Product(private var name: String, private val price: Int, private var quan
         return price
     }
 
-    fun getPromotion() : Promotion? {
+    fun getPromotion(): Promotion? {
         return promotion
     }
 

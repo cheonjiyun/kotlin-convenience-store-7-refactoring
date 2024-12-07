@@ -2,7 +2,7 @@ package store
 
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import store.Product.Product
+import store.model.Product.Product
 
 class ProductTest {
     @Test

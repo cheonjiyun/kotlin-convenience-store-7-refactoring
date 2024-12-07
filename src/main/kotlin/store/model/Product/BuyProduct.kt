@@ -1,6 +1,6 @@
-package store.Product
+package store.model.Product
 
-import store.Promotion.Promotion
+import store.model.Promotion.Promotion
 
 data class BuyProduct(
     val name: String,
