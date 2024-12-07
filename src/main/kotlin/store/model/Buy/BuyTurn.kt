@@ -55,8 +55,8 @@ class BuyController(
         }
     }
 
-    private fun inputBuyList() {
-        buyList = inputView.readItem().map { buyInput ->
+    private fun inputBuyList(): List<BuyProduct> {
+        return inputView.readItem().map { buyInput ->
             val product = findProduct(products, buyInput.name)
             BuyProduct(buyInput.name, product.getPrice(), buyInput.quantity, product.getPromotion())
         }
@@ -65,7 +65,7 @@ class BuyController(
     fun buyStart() {
         outputView.printProducts(products)
 
-        inputBuyList()
+        buyList = inputBuyList()
 
         val promotionModel = PromotionModel(buyList, promotionList, products, promotions, inputView)
         promotionModel.checkPromotions()
