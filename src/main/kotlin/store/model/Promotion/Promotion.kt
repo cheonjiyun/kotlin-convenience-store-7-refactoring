@@ -23,14 +23,6 @@ class Promotion(
         return get
     }
 
-    fun getStartDate(): String {
-        return start_date
-    }
-
-    fun getEndDate(): String {
-        return end_date
-    }
-
     fun canApplyPromotion(): Boolean {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd")
         val startDate = dateFormat.parse(start_date)
